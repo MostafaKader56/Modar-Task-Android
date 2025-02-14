@@ -25,6 +25,7 @@ class NumberChooserComponent @JvmOverloads constructor(
         set(value) {
             if (field == value) return
             field = value
+            setError("")
             updateDisplay()
             onNumberChanged?.invoke(value)
         }
