@@ -1,6 +1,5 @@
 package com.modar.task.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -14,7 +13,7 @@ interface UserDao {
     suspend fun insert(user: User)
 
     @Query("SELECT * FROM user_table")
-    fun getAllUsers(): LiveData<List<User>>
+    suspend fun getAllUsers(): List<User>
 
     @Delete
     suspend fun delete(user: User)
