@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.modar.task.R
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 // Base Class for ViewModels in the project where it's logic differ from project to another
 @ViewModelScoped
@@ -23,11 +25,15 @@ abstract class BaseViewModel : ViewModel() {
         val response = request.invoke()
         if (response != null) {
             uiState?.success = true
-            onSuccessfulResponse(id, BaseRoomResource(response), uiState)
+            withContext(Dispatchers.Main) {
+                onSuccessfulResponse(id, BaseRoomResource(response), uiState)
+            }
         } else {
             uiState?.success = false
             uiState?.errorMessageRes = R.string.error_something_went_wrong
-            onFailedResponse(id, R.string.error_something_went_wrong, uiState)
+            withContext(Dispatchers.Main) {
+                onFailedResponse(id, R.string.error_something_went_wrong, uiState)
+            }
         }
     }
 
