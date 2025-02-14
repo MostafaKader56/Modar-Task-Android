@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Modar Task</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
 </resources>
