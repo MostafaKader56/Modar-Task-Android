@@ -3,4 +3,7 @@
     <string name="female">Female</string>
     <string name="male">Male</string>
     <string name="error_something_went_wrong">Something went wrong</string>
+    <string name="select">Select</string>
+    <string name="error_number_too_low">%1s is too low</string>
+    <string name="error_number_too_high">%1s is too high</string>
 </resources>

@@ -28,4 +28,29 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>
+
+    <style name="CustomComponentSpinnerTheme" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/bg_custom_component_spinner_with_icon</item>
+        <item name="android:popupBackground">@color/white</item>
+        <item name="android:textColor">@color/grey_black</item>
+    </style>
+
+    <style name="CustomNumberPickerTheme" parent="Theme.Material3.Light" />
+
+    <!-- Define a custom font families -->
+    <style name="InterFontStyleRegular400">
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <style name="InterFontStyleMedium500">
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="InterFontStyleSemiBold600">
+        <item name="android:fontFamily">@font/inter_semi</item>
+    </style>
+
+    <style name="InterFontStyleBold700">
+        <item name="android:fontFamily">@font/inter_bold</item>
+    </style>
 </resources>
