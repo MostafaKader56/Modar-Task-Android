@@ -142,17 +142,17 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
 
     private class SavedState : BaseSavedState {
         var selectedItem: SpinnerItemsAdapter.SpinnerItem? = null
-
+        var errorMessage: String? = null
         constructor(superState: Parcelable?) : super(superState)
         constructor(source: Parcel) : super(source) {
             selectedItem = source.readParcelableCompat()
+            errorMessage = source.readString()  // restore error message
         }
-
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeParcelable(selectedItem, flags)
+            out.writeString(errorMessage)  // save error message
         }
-
         companion object {
             @JvmField
             val CREATOR = object : Parcelable.Creator<SavedState> {
@@ -166,6 +166,7 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
         val superState = super.onSaveInstanceState()
         return SavedState(superState).apply {
             selectedItem = getSelectedItem()
+            errorMessage = binding.tvError.text.toString()
         }
     }
 
@@ -174,9 +175,10 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
             is SavedState -> {
                 super.onRestoreInstanceState(state.superState)
                 savedSelectedItem = state.selectedItem
+                // Restore error state if available
+                setError(state.errorMessage ?: "")
                 tryRestoreSelection()
             }
-
             else -> super.onRestoreInstanceState(state)
         }
     }
