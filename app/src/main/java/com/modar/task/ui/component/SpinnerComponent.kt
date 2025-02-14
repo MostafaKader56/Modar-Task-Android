@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -88,6 +87,10 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
                 position: Int,
                 id: Long
             ) {
+                if (restorationInProgress) {
+                    restorationInProgress = false
+                    return
+                }
                 val selected = getSelectedItem()
                 if (savedSelectedItem != null && selected == savedSelectedItem) {
                     savedSelectedItem = null
@@ -99,6 +102,8 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
+
+    private var restorationInProgress = false
 
     private fun tryRestoreSelection() {
         savedSelectedItem?.let { item ->
@@ -188,6 +193,7 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
                 super.onRestoreInstanceState(state.superState)
                 savedSelectedItem = state.selectedItem
                 this.errorMessage = state.error
+                restorationInProgress = true
                 tryRestoreSelection()
             }
 
