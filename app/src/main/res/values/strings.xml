@@ -19,4 +19,9 @@
     <string name="please_enter_your_information_below">Please enter your information below</string>
     <string name="job_title">Job Title</string>
     <string name="enter_your_job_title">Enter your job title</string>
+    <string name="error_name_empty">Enter name</string>
+    <string name="error_age_empty">Select age</string>
+    <string name="error_job_title_empty">Enter job title</string>
+    <string name="error_gender_empty">Select gender</string>
+    <string name="user_inserted_successfully">User inserted successfully.</string>
 </resources>

@@ -7,6 +7,8 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.widget.EditText
+import android.widget.Toast
+import com.modar.task.ModarTaskApplication
 
 object Utils {
     fun EditText.onFocused(onFocused: () -> Unit) {
@@ -53,8 +55,11 @@ object Utils {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             readParcelable(T::class.java.classLoader, T::class.java)
         } else {
-            @Suppress("DEPRECATION")
-            readParcelable(T::class.java.classLoader)
+            @Suppress("DEPRECATION") readParcelable(T::class.java.classLoader)
         }
+    }
+
+    fun Any?.toast() {
+        Toast.makeText(ModarTaskApplication.instance, this.toString(), Toast.LENGTH_LONG).show()
     }
 }
