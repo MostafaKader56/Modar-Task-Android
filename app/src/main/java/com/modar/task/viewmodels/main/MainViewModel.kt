@@ -8,6 +8,7 @@ import com.modar.task.base.BaseItemUIState
 import com.modar.task.base.BaseRoomResource
 import com.modar.task.base.BaseUiResource
 import com.modar.task.base.BaseViewModel
+import com.modar.task.base.SingleLiveEvent
 import com.modar.task.model.main.User
 import com.modar.task.repo.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,7 @@ class MainViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val insertUserResponse = MutableLiveData<BaseUiResource<Unit>>()
+    private val insertUserResponse = SingleLiveEvent<BaseUiResource<Unit>>()
     val insertUserLiveData: LiveData<BaseUiResource<Unit>>
         get() = insertUserResponse
 
