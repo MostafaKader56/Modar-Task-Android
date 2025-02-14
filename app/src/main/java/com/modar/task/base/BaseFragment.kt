@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.modar.task.utils.CustomLoading
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
@@ -20,6 +21,10 @@ abstract class BaseFragment<VB : ViewBinding, MV : BaseViewModel> : Fragment() {
     }
 
     abstract fun getInjectViewModel(): MV
+
+    private val customLoading: CustomLoading by lazy {
+        CustomLoading(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +47,22 @@ abstract class BaseFragment<VB : ViewBinding, MV : BaseViewModel> : Fragment() {
         initializeViewModel()
         initialization()
         listeners()
+
+        observerLoadingStatue()
     }
+
+    private fun observerLoadingStatue() {
+        viewModel.startLoadingLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                customLoading.show()
+            } else {
+                customLoading.dismiss()
+            }
+            trackLoadingStatus(it)
+        }
+    }
+
+    open fun trackLoadingStatus(status: Boolean) {}
 
     override fun onDestroyView() {
         super.onDestroyView()

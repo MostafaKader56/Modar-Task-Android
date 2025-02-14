@@ -1,5 +1,7 @@
 package com.modar.task.base
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.modar.task.R
 import dagger.hilt.android.scopes.ViewModelScoped
@@ -7,6 +9,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 // Base Class for ViewModels in the project where it's logic differ from project to another
 @ViewModelScoped
 abstract class BaseViewModel : ViewModel() {
+    protected val startLoading = MutableLiveData<Boolean>()
+    val startLoadingLiveData: LiveData<Boolean>
+        get() = startLoading
+
     suspend fun <T : Any> handleRoomRequest(
         id: Int,
         request: suspend () -> T?,

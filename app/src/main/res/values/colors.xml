@@ -3,4 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="routing_screen_back">#EAD4D3</color>
+    <color name="red">@android:color/holo_red_light</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="colorLoadingBackground">#59114C64</color>
 </resources>

@@ -38,56 +38,54 @@ class MainViewModel @Inject constructor(
 
     fun insertUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
+            startLoading.postValue(true)
             handleRoomRequest(
-                R.id.insert_user,
-                {
+                R.id.insert_user, {
                     userRepository.insert(user)
-                },
-                BaseItemUIState(user)
+                }, BaseItemUIState(user)
             )
+            startLoading.postValue(false)
         }
     }
 
     fun getAllUsers() {
         viewModelScope.launch(Dispatchers.IO) {
+            getAllUsersResponse.postValue(BaseUiResource.LoadingState)
             handleRoomRequest(
-                R.id.get_all_users,
-                {
+                R.id.get_all_users, {
                     userRepository.getAllUsers()
-                },
-                null
+                }, null
             )
         }
     }
 
     fun deleteALlUsers() {
         viewModelScope.launch(Dispatchers.IO) {
+            startLoading.postValue(true)
             handleRoomRequest(
-                R.id.delete_all_users,
-                {
+                R.id.delete_all_users, {
                     userRepository.deleteAllUsers()
-                },
-                null
+                }, null
             )
+            startLoading.postValue(false)
         }
     }
 
     fun deleteUser(user: User) {
+        startLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
+            startLoading.postValue(true)
             handleRoomRequest(
-                R.id.delete_user,
-                {
+                R.id.delete_user, {
                     userRepository.delete(user)
-                },
-                BaseItemUIState(user)
+                }, BaseItemUIState(user)
             )
+            startLoading.postValue(false)
         }
     }
 
     override fun <T> onSuccessfulResponse(
-        id: Int,
-        resource: BaseRoomResource<T>?,
-        uiState: BaseItemUIState<Any>?
+        id: Int, resource: BaseRoomResource<T>?, uiState: BaseItemUIState<Any>?
     ) {
         when (id) {
             R.id.insert_user -> {
@@ -112,6 +110,10 @@ class MainViewModel @Inject constructor(
             }
 
             R.id.delete_all_users -> {
+                getAllUsersResponse.value = BaseUiResource.SuccessState(
+                    data = emptyList(),
+                    uiState = uiState,
+                )
                 deleteAllUsersResponse.value = BaseUiResource.SuccessState(
                     data = resource?.response as Unit,
                     uiState = uiState,
@@ -121,9 +123,7 @@ class MainViewModel @Inject constructor(
     }
 
     override fun onFailedResponse(
-        id: Int,
-        errorStringRes: Int?,
-        uiState: BaseItemUIState<Any>?
+        id: Int, errorStringRes: Int?, uiState: BaseItemUIState<Any>?
     ) {
         when (id) {
             R.id.insert_user -> {
