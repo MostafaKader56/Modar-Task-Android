@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -27,6 +28,17 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
             dropDownItemColor = R.color.black,
         )
     }
+
+    private var errorMessage: String? = null
+        set(value) {
+            field = value
+            if (value.isNullOrEmpty()) {
+                binding.tvError.visibility = View.GONE
+            } else {
+                binding.tvError.visibility = View.VISIBLE
+            }
+            binding.tvError.text = value
+        }
 
     init {
         if (!isInEditMode) {
@@ -57,8 +69,9 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
 
         listeners()
 
+        this.errorMessage = textError
+
         setComponentLabel(componentLabel ?: "")
-        setError(textError ?: "")
         setComponentClickable(componentClickable)
         setComponentHint(componentHint)
     }
@@ -69,7 +82,12 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
 
     private fun listeners() {
         binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 val selected = getSelectedItem()
                 if (savedSelectedItem != null && selected == savedSelectedItem) {
                     savedSelectedItem = null
@@ -77,6 +95,7 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
                 }
                 handleSelectionChange()
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
@@ -92,8 +111,8 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
                     onItemSelectedListener = null
                     setSelection(position)
                     post {
-                        onItemSelectedListener = listener
                         savedSelectedItem = null
+                        onItemSelectedListener = listener
                     }
                 }
             }
@@ -101,7 +120,7 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
     }
 
     private fun handleSelectionChange() {
-        setError("")
+        this.errorMessage = null
         onItemSelectedCallback?.invoke(getSelectedItem())
     }
 
@@ -122,16 +141,6 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    fun setError(errorMessage: String) {
-        if (errorMessage.isBlank()) {
-            binding.tvError.visibility = View.GONE
-        } else {
-            binding.tvError.visibility = View.VISIBLE
-        }
-
-        binding.tvError.text = errorMessage
-    }
-
     fun disableComponent() {
         binding.spinner.apply {
             isClickable = false
@@ -142,17 +151,20 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
 
     private class SavedState : BaseSavedState {
         var selectedItem: SpinnerItemsAdapter.SpinnerItem? = null
-        var errorMessage: String? = null
+        var error: String? = null
+
         constructor(superState: Parcelable?) : super(superState)
         constructor(source: Parcel) : super(source) {
             selectedItem = source.readParcelableCompat()
-            errorMessage = source.readString()  // restore error message
+            error = source.readString()  // restore error message
         }
+
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeParcelable(selectedItem, flags)
-            out.writeString(errorMessage)  // save error message
+            out.writeString(error)
         }
+
         companion object {
             @JvmField
             val CREATOR = object : Parcelable.Creator<SavedState> {
@@ -166,7 +178,7 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
         val superState = super.onSaveInstanceState()
         return SavedState(superState).apply {
             selectedItem = getSelectedItem()
-            errorMessage = binding.tvError.text.toString()
+            error = this@SpinnerComponent.errorMessage
         }
     }
 
@@ -175,10 +187,10 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
             is SavedState -> {
                 super.onRestoreInstanceState(state.superState)
                 savedSelectedItem = state.selectedItem
-                // Restore error state if available
-                setError(state.errorMessage ?: "")
+                this.errorMessage = state.error
                 tryRestoreSelection()
             }
+
             else -> super.onRestoreInstanceState(state)
         }
     }
@@ -191,5 +203,9 @@ class SpinnerComponent(context: Context, attrs: AttributeSet?) :
     fun setItems(items: List<SpinnerItemsAdapter.SpinnerItem>) {
         itemsAdapter.setItems(items)
         tryRestoreSelection()
+    }
+
+    fun setError(error: String) {
+        this.errorMessage = error
     }
 }
