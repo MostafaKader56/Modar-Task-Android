@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:gravity="top|start"
             android:textColor="@color/black"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/grey_black"
             android:textCursorDrawable="@color/main"
             android:textSize="16sp"
             tools:hint="Edit text hint..."
