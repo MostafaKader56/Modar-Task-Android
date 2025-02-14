@@ -10,5 +10,6 @@
     <color name="main">#165AA7</color>
     <color name="golden">#F5F5F8</color>
     <color name="grey_black">#9A9999</color>
+    <color name="light_grey">#F3F4F6</color>
 
 </resources>
