@@ -51,7 +51,7 @@ One of the key aspects of my Android development philosophy is creating reusable
 - **BaseActivity**: Provides common setup and lifecycle management for activities.
 - **BaseFragment**: Offers a foundation for fragments, including lifecycle methods and data binding.
 - **BaseViewModel**: Abstracts common ViewModel logic, such as data fetching and state management.
-- **BaseRepository**: Handles data operations, whether from a local database or remote server.
+  **...etc**
 
 This approach allows me to quickly spin up new features while maintaining a clean and maintainable codebase.
 
