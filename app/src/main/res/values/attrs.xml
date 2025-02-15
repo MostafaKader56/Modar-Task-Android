@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="EditTextComponent">
+        <attr name="text_label" format="string" />
+        <attr name="text_hint" format="string" />
+        <attr name="text_error" format="string" />
+        <attr name="text_max_length" format="integer" />
+        <attr name="text_lines" format="integer" />
+        <attr name="text_inputType">
+            <enum name="text" value="0" />
+            <enum name="email" value="1" />
+            <enum name="password" value="2" />
+            <enum name="phone" value="3" />
+            <enum name="currency" value="4" />
+            <enum name="number" value="5" />
+            <enum name="bank_card_number" value="6" />
+            <enum name="bank_card_ex_date" value="7" />
+        </attr>
+        <attr name="component_clickable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SpinnerComponent">
+        <attr name="sp_text_label" format="string" />
+        <attr name="sp_text_hint" format="string" />
+        <attr name="sp_text_error" format="string" />
+        <attr name="sp_component_clickable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="NumberChooserComponent">
+        <attr name="nc_min" format="integer" />
+        <attr name="nc_max" format="integer" />
+        <attr name="nc_text_label" format="string" />
+        <attr name="nc_text_hint" format="string" />
+        <attr name="nc_text_error" format="string" />
+        <attr name="nc_enabled" format="boolean" />
+        <attr name="nc_prefix" format="string" />
+        <attr name="nc_suffix" format="string" />
+    </declare-styleable>
+</resources>
