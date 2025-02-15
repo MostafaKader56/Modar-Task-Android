@@ -24,4 +24,16 @@
     <string name="error_job_title_empty">Enter job title</string>
     <string name="error_gender_empty">Select gender</string>
     <string name="user_inserted_successfully">User inserted successfully.</string>
+    <string name="saved_records">Saved Records</string>
+    <string name="delete_all">Delete All</string>
+    <string name="back">Back</string>
+    <string name="there_is_no_saved_users">There is no saved users</string>
+    <string name="okay">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="dummy_taost">It\'s %1$s\'s Card</string>
+    <string name="year">year</string>
+    <string name="age_with_suffix">%1$s %2$s</string>
+    <string name="are_you_sure_you_want_to_delete_all_users">Are you sure want to delete all users?</string>
 </resources>
