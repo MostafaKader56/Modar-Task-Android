@@ -1,5 +1,6 @@
 package com.modar.task.utils
 
+import android.content.Context
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -8,7 +9,9 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.modar.task.ModarTaskApplication
+import com.modar.task.R
 
 object Utils {
     fun EditText.onFocused(onFocused: () -> Unit) {
@@ -61,5 +64,28 @@ object Utils {
 
     fun Any?.toast() {
         Toast.makeText(ModarTaskApplication.instance, this.toString(), Toast.LENGTH_LONG).show()
+    }
+
+
+    fun Context.showAlert(
+        title: String,
+        message: String,
+        canCancel: Boolean = true,
+        textPositiveButton: String = getString(R.string.okay),
+        textNegativeButton: String = getString(R.string.cancel),
+        onPositiveClicked: (() -> Unit)? = null,
+        onNegativeClicked: (() -> Unit)? = null,
+    ) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setCancelable(canCancel)
+            .setNegativeButton(textNegativeButton) { _, _ ->
+                onNegativeClicked?.invoke()
+            }
+            .setPositiveButton(textPositiveButton) { _, _ ->
+                onPositiveClicked?.invoke()
+            }
+            .show()
     }
 }
