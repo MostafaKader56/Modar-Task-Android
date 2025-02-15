@@ -29,11 +29,11 @@ class MainViewModel @Inject constructor(
     val getAllUsersLiveData: LiveData<BaseUiResource<List<User>>>
         get() = getAllUsersResponse
 
-    private val deleteUserResponse = MutableLiveData<BaseUiResource<Unit>>()
+    private val deleteUserResponse = SingleLiveEvent<BaseUiResource<Unit>>()
     val deleteUserLiveData: LiveData<BaseUiResource<Unit>>
         get() = deleteUserResponse
 
-    private val deleteAllUsersResponse = MutableLiveData<BaseUiResource<Unit>>()
+    private val deleteAllUsersResponse = SingleLiveEvent<BaseUiResource<Unit>>()
     val deleteAllUsersLiveData: LiveData<BaseUiResource<Unit>>
         get() = deleteAllUsersResponse
 
@@ -43,7 +43,8 @@ class MainViewModel @Inject constructor(
             handleRoomRequest(
                 R.id.insert_user, {
                     userRepository.insert(user)
-                }, BaseItemUIState(user)
+                },
+                null
             )
             startLoading.postValue(false)
         }
@@ -62,24 +63,24 @@ class MainViewModel @Inject constructor(
 
     fun deleteALlUsers() {
         viewModelScope.launch(Dispatchers.IO) {
-            startLoading.postValue(true)
+            deleteAllUsersResponse.postValue(BaseUiResource.LoadingState)
             handleRoomRequest(
                 R.id.delete_all_users, {
                     userRepository.deleteAllUsers()
                 }, null
             )
-            startLoading.postValue(false)
         }
     }
 
-    fun deleteUser(user: User) {
-        startLoading.postValue(true)
+    fun deleteUser(userUiState: BaseItemUIState<User>) {
+        if (userUiState.item == null) return
         viewModelScope.launch(Dispatchers.IO) {
             startLoading.postValue(true)
             handleRoomRequest(
                 R.id.delete_user, {
-                    userRepository.delete(user)
-                }, BaseItemUIState(user)
+                    userRepository.delete(userUiState.item!!)
+                },
+                userUiState
             )
             startLoading.postValue(false)
         }
@@ -111,10 +112,6 @@ class MainViewModel @Inject constructor(
             }
 
             R.id.delete_all_users -> {
-                getAllUsersResponse.value = BaseUiResource.SuccessState(
-                    data = emptyList(),
-                    uiState = uiState,
-                )
                 deleteAllUsersResponse.value = BaseUiResource.SuccessState(
                     data = resource?.response as Unit,
                     uiState = uiState,
